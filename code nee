@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+int chuyendoi(char a, char y[]) {
+	for (int i = 0; i < 26; i++) {
+		if (y[i] == toupper(a) || y[i] == tolower(a)) {
+			return i;
+		}
+	}
+	return -1;
+}
+bool ktra(int a) {
+	if (a <= 0) return 0;
+	for (int i = 2; i <= a; i++) {
+		if (a % i == 0 && 26 % i == 0) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int giaima(char z[], char x[], char y[], int a, int b) {
+	int dem = 0;
+	int flag = ktra(a);
+	for (int i = 0; i < strlen(x); i++) {
+		if (x[i] == ' ') {
+			z[i] = ' ';
+			dem++;
+		}
+		else if (flag == 1) {
+			z[i] = y[(a * chuyendoi(x[i], y) + b) % 26];
+			dem++;
+		}
+		else {
+			cout << "Can't Encrypted and Decrypted this Message";
+			return -1;
+		}
+	}
+	z[dem] = '\0';
+	cout << "Encrypted Message is : ";
+	for (int i = 0; i < dem; i++) {
+		cout << z[i];
+	}
+	return 1;
+}
+int tima(int a) {
+	for (int i = 1; i < 100; i++) {
+		if (a * i % 26 == 1) {
+			return i;
+		}
+	}
+	return -1;
+}
+void giaimanguoc(char x[], char z[], char y[], int a, int b) {
+	int dem = 0;
+	a = tima(a);
+	for (int i = 0; i < strlen(z); i++) {
+		if (z[i] == ' ') {
+			x[i] = ' ';
+			dem++;
+		}
+		else if (chuyendoi(z[i], y) != -1) {
+			if (a * (chuyendoi(z[i], y) - b) % 26 < 0) {
+				x[i] = y[a * (chuyendoi(z[i], y) - b) % 26 +26];
+			}
+			else {
+				x[i] = y[a * (chuyendoi(z[i], y) - b) % 26]; 
+			}
+			dem++;
+
+		}
+	}	
+	dem++;
+	x[dem] = '\0';
+	cout << "\nDecrypted Message is : ";
+	for (int i = 0; i < dem; i++) {
+		cout << x[i];
+	}
+}
+int main() {
+	char y[26];
+	y[0] = 'a';
+	y[1] = 'b';
+	y[2] = 'c';
+	y[3] = 'd';
+	y[4] = 'e';
+	y[5] = 'f';
+	y[6] = 'g';
+	y[7] = 'h';
+	y[8] = 'i';
+	y[9] = 'j';
+	y[10] = 'k';
+	y[11] = 'l';
+	y[12] = 'm';
+	y[13] = 'n';
+	y[14] = 'o';
+	y[15] = 'p';
+	y[16] = 'q';
+	y[17] = 'r';
+	y[18] = 's';
+	y[19] = 't';
+	y[20] = 'u';
+	y[21] = 'v';
+	y[22] = 'w';
+	y[23] = 'x';
+	y[24] = 'y';
+	y[25] = 'z';
+	int a, b;
+	cin >> a >> b;
+	cin.ignore();
+	char x[100];
+	cin.getline(x, 100);
+	char z[100];
+	if (giaima(z, x, y, a, b) == 1) {
+		giaimanguoc(x, z, y, a, b);
+	}
+}
